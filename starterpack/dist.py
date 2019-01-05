@@ -54,10 +54,16 @@ def zip_pack():
     os.makedirs(paths.dist(), exist_ok=True)
     with zipfile.ZipFile(paths.zipped(), 'w', zipfile.ZIP_DEFLATED) as zf:
         for dirname, _, files in os.walk(paths.build()):
-            zf.write(dirname, os.path.relpath(dirname, paths.build()))
+            try:
+                zf.write(dirname, os.path.relpath(dirname, paths.build()))
+            except:
+                print('\n' + dirname + ' does not exist or other error occured.')
             for filename in files:
                 fname = os.path.join(dirname, filename)
-                zf.write(fname, os.path.relpath(fname, paths.build()))
+                try:
+                    zf.write(fname, os.path.relpath(fname, paths.build()))
+                except:
+                    print('\n' + fname + ' does not exist or other error occured')
 
 
 def release_docs():
